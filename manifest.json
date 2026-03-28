@@ -14,7 +14,7 @@
     "name": "immersive-player",
     "description": "An improved fullscreen app for Spicetify",
     "preview": "https://imgur.com/a/dioKBcW",
-    "main": "https://github.com/EllisG17/immersive-player/blob/main/immersive-player/index.js",
+    "main": "https://github.com/EllisG17/immersive-player/blob/main/index.js",
     "readme": "https://github.com/EllisG17/immersive-player/blob/main/README.md",
     "branch": "release"
   },
