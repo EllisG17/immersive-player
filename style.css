@@ -1,0 +1,589 @@
+.im-root {
+  padding: 24px;
+  max-width: 720px;
+}
+
+.im-card {
+  background: rgba(var(--spice-rgb-card), 0.65);
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid rgba(var(--spice-rgb-subtext), 0.15);
+}
+
+.im-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--spice-text);
+}
+
+.im-desc {
+  color: rgba(var(--spice-rgb-subtext), 1);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.im-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--spice-button);
+  color: var(--spice-button-text);
+}
+
+.im-btn:hover {
+  filter: brightness(1.06);
+}
+
+.im-fs {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-family: var(
+    --glue-font-spotify-circular,
+    CircularSpTitle,
+    CircularSpTitle-Tall,
+    CircularSpTxt,
+    CircularSpTxt-Book,
+    CircularSpTxt-Bold,
+    sans-serif
+  );
+}
+
+.im-fs-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(48px) saturate(1.15);
+  transform: scale(1.08);
+}
+
+.im-fs-bg-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.72));
+}
+
+.im-layout-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.im-layout-canvas.is-edit-mode {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 19px,
+    rgba(255, 255, 255, 0.03) 19px,
+    rgba(255, 255, 255, 0.03) 20px
+  ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 19px,
+      rgba(255, 255, 255, 0.03) 19px,
+      rgba(255, 255, 255, 0.03) 20px
+    );
+}
+
+/* 5% grid ≈ stronger guides when snap + edit (pixel grid is visual only) */
+.im-layout-canvas.im-layout-canvas--snap.is-edit-mode {
+  background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 19px,
+      rgba(120, 200, 255, 0.07) 19px,
+      rgba(120, 200, 255, 0.07) 20px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 19px,
+      rgba(120, 200, 255, 0.07) 19px,
+      rgba(120, 200, 255, 0.07) 20px
+    );
+}
+
+.im-fs-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  padding: 24px;
+  gap: 24px;
+}
+
+.im-fs-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.im-fs-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px 24px;
+  overflow: hidden;
+}
+
+.im-fs-body--video-full {
+  padding: 0;
+  gap: 0;
+}
+
+.im-video-host--full {
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  max-height: 100%;
+  border-radius: 8px;
+}
+
+.im-fs-video-full .im-fs-left {
+  flex: 1;
+}
+
+.im-fs-video-full .im-fs-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(420px, 42vw);
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.55), transparent);
+  pointer-events: none;
+}
+
+.im-fs-video-full .im-fs-right > * {
+  pointer-events: auto;
+}
+
+.im-drag-panel {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.im-drag-panel.is-editing {
+  outline: 2px dashed rgba(120, 200, 255, 0.55);
+  outline-offset: 2px;
+}
+
+.im-drag-handle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: grab;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.85);
+  user-select: none;
+  touch-action: none;
+}
+
+.im-drag-handle:active {
+  cursor: grabbing;
+}
+
+.im-drag-handle-icon {
+  opacity: 0.65;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.im-drag-resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  cursor: nwse-resize;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.65) 45%,
+    rgba(255, 255, 255, 0.65) 48%,
+    transparent 48%
+  );
+  z-index: 5;
+  touch-action: none;
+}
+
+.im-panel-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.im-panel-body--flush {
+  padding: 0;
+}
+
+.im-panel-media-fill {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.im-cover-wrap {
+  position: relative;
+  width: min(52vh, 92%);
+  aspect-ratio: 1;
+  max-width: 520px;
+}
+
+.im-cover-wrap--in-panel {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1;
+}
+
+.im-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.im-vinyl .im-cover {
+  border-radius: 50%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 8px rgba(20, 20, 20, 0.95);
+}
+
+.im-vinyl-groove {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.im-vinyl-label {
+  position: absolute;
+  inset: 32%;
+  border-radius: 50%;
+  background: #121212;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.im-vinyl-label img {
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.im-vinyl-spin {
+  animation-name: im-spin;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.im-vinyl-spin.is-paused {
+  animation-play-state: paused;
+}
+
+@keyframes im-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.im-tonearm {
+  position: absolute;
+  top: -4%;
+  right: -8%;
+  width: 44%;
+  height: 44%;
+  pointer-events: none;
+  transform-origin: 92% 12%;
+  transition: transform 0.35s ease-out;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.45));
+}
+
+.im-tonearm--minimal {
+  transform-origin: 90% 11%;
+}
+
+.im-tonearm--scurve {
+  transform-origin: 88% 10%;
+}
+
+.im-tonearm--retro {
+  transform-origin: 90% 9%;
+  filter: drop-shadow(0 6px 10px rgba(40, 25, 0, 0.5));
+}
+
+.im-video-host {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.im-video-host video {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.im-fs-top {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 20px;
+  gap: 12px;
+}
+
+.im-track-meta {
+  min-width: 0;
+}
+
+.im-track-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.65);
+}
+
+.im-track-artist {
+  margin: 4px 0 0;
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+.im-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.im-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.im-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.im-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.im-controls button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.im-controls button.im-play {
+  width: 52px;
+  height: 52px;
+  background: #fff;
+  color: #000;
+  font-size: 1.25rem;
+}
+
+.im-time-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.im-scrub {
+  flex: 1;
+  accent-color: #fff;
+}
+
+.im-lyrics {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-top: 0;
+  scroll-behavior: smooth;
+  min-height: 0;
+  mask-image: linear-gradient(180deg, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+}
+
+.im-lyrics-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.im-lyric-line {
+  font-size: 1.45rem;
+  line-height: 1.45;
+  margin: 0 0 0.75rem;
+  opacity: 0.35;
+  font-weight: 600;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.im-lyric-line.is-active {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.im-lyric-line.is-passed {
+  opacity: 0.55;
+}
+
+.im-panel {
+  position: absolute;
+  z-index: 10000;
+  top: 56px;
+  right: 20px;
+  width: min(360px, 92vw);
+  max-height: min(72vh, 640px);
+  overflow-y: auto;
+  background: rgba(12, 12, 12, 0.92);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+.im-panel h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+.im-panel .im-toggle--on {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.im-panel .im-toggle--off {
+  background: rgba(0, 0, 0, 0.48) !important;
+  color: rgba(255, 255, 255, 0.62) !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+.im-panel .im-toggle--off:hover {
+  filter: brightness(1.12);
+}
+
+.im-panel .im-toggle--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.im-panel .im-toggle--disabled:hover {
+  filter: none;
+}
+
+.im-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.im-row span {
+  font-size: 0.9rem;
+}
+
+.im-select {
+  flex: 1;
+  max-width: 180px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.im-select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.im-hint {
+  font-size: 0.75rem;
+  opacity: 0.65;
+  margin: -4px 0 12px;
+  line-height: 1.4;
+}
+
+.im-speed {
+  width: 100%;
+  margin-top: 4px;
+}
